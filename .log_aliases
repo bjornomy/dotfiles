@@ -1,0 +1,30 @@
+## Stavanger
+alias svgise02-log-arrival='curl -u driwkraft:svgprod http://10.241.48.50/arrival/logfile | less -S'
+alias svgise02-log-customer='curl -u driwkraft:svgprod http://10.241.48.50/customer/logfile | less -S'
+alias svgise02-log-inventory='curl -u driwkraft:svgprod http://10.241.48.50/inventory/logfile | less -S'
+alias svgise02-log-item='curl -u driwkraft:svgprod http://10.241.48.50/item/logfile | less -S'
+alias svgise02-log-pick='curl -u driwkraft:svgprod http://10.241.48.50/pick/logfile | less -S'
+alias svgise02-log-supplier='curl -u driwkraft:svgprod http://10.241.48.50/supplier/logfile | less -S'
+alias svgise02-log-transport='curl -u driwkraft:svgprod http://10.241.48.50/transport/logfile | less -S'
+alias svgise02-log-witron='curl -u driwkraft:svgprod http://10.241.48.50/witron/logfile | less -S'
+
+## RDO / Nye Vinterbro
+alias viniha-log-arrival='curl -u extdpbom:pbsar http://10.241.50.51/arrival/logfile | less -S'
+alias viniha-log-customer='curl -u extdpbom:pbsar http://10.241.50.51/customer/logfile | less -S'
+alias viniha-log-inventory='curl -u extdpbom:pbsar http://10.241.50.51/inventory/logfile | less -S'
+alias viniha-log-item='curl -u extdpbom:pbsar http://10.241.50.51/item/logfile | less -S'
+alias viniha-log-pick='curl -u extdpbom:pbsar http://10.241.50.51/pick/logfile | less -S'
+alias viniha-log-supplier='curl -u extdpbom:pbsar http://10.241.50.51/supplier/logfile | less -S'
+alias viniha-log-transport='curl -u extdpbom:pbsar http://10.241.50.51/transport/logfile | less -S'
+alias viniha-log-witron='curl -u extdpbom:pbsar http://10.241.50.51/witron/logfile | less -S'
+
+## Local docker
+alias vagle-log-arrival='docker container logs --follow vagle-arrival-server'
+alias vagle-log-customer='docker container logs --follow vagle-customer-server'
+alias vagle-log-inventory='docker container logs --follow vagle-inventory-server'
+alias vagle-log-item='docker container logs --follow vagle-item-server'
+alias vagle-log-pick='docker container logs --follow vagle-pick-server'
+alias vagle-log-supplier='docker container logs --follow vagle-supplier-server'
+alias vagle-log-transport='docker container logs --follow vagle-transport-server'
+alias vagle-log-witron='docker container logs --follow vagle-witron-server'
+
