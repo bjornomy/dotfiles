@@ -1,9 +1,48 @@
 # General aliases
 alias grskj='java -jar ~/tn5250j/lib/tn5250j.jar'
+alias python='python3'
+alias pip='pip3'
 
 # reload config
 alias rc='. ~/.bashrc'
 ###########################
+
+# helper functions
+ipecho() {
+    if [ -z $1 ]; then
+        echo 'usage: ipecho <host>'
+    fi
+
+    echo "$(ping -c 1 $1 | awk 'NR==1 {print substr($3, 2, length($3) - 2)}')"
+}
+
+azsid() {
+    if [ -z $1 ]; then
+        echo 'usage: azsid <subscription name>'
+    fi
+
+    echo "$(az account list | jq ".[] | select (.name == \"$1\").id" | awk '{print substr($1, 2, length($1) - 2)}')"
+}
+###########################
+
+# countdown
+countdown() {
+
+  if [ -z $1 ]; then
+      echo 'format: countdown <seconds>'
+      return
+  fi
+ 
+  date1=$((`date +%s` + $1))
+
+  while [ "$date1" -ge `date +%s` ]; do 
+    echo -ne "$(date -u --date @$(($date1 - `date +%s` )) +%H:%M:%S)\r"
+     sleep 0.2
+  done
+}
+alias cntd='countdown'
+###########################
+
 
 # witron
 wpc() {
@@ -32,6 +71,33 @@ alias txls='tmux ls'
 alias txr='tmux attach-session -t'
 alias txn='tmux new -s'
 alias txk='tmux kill-session -t'
+###########################
+
+
+# vim shortcuts
+alias vbal='vim ~/dotfiles/.bash_aliases'
+###########################
+
+# remap cat to bat
+alias cat='bat'
+###########################
+
+# exa
+#alias ls='exa'
+alias el='exa -alh --git'
+alias ea='exa -aF'
+alias e='exa -F --grid'
+alias e1='exa -1'
+
+alias et='el --tree'
+alias et2='el --tree --level 2'
+alias et3='el --tree --level 3'
+
+# rebind ls aliases
+alias ll='el'
+alias la='ea'
+alias l='e'
+alias l1='e1'
 ###########################
 
 # reckon

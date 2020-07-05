@@ -98,10 +98,11 @@ fi
 # colored GCC warnings and errors
 #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
+# NOTE: added through other means
 # some more ls aliases
-alias ll='ls -alF'
-alias la='ls -A'
-alias l='ls -CF'
+#alias ll='ls -alF'
+#alias la='ls -A'
+#alias l='ls -CF'
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
@@ -160,11 +161,15 @@ export BASH_IT="/home/bom/.bash_it"
 export TODO="t"
 export EDITOR="vim"
 
+# exa color scheme
+export EXA_COLORS="da=2;36:ur=33:uw=31:ux=32:sn=2;32:uu=33"
+
 # Load Bash It
 source "$BASH_IT"/bash_it.sh
 
 # Load azure cli autocomplettion
 source /etc/bash_completion.d/azure-cli
+export AZ_DEV_CLIENT_SECRET=0ddf4a56-8f23-40cc-baac-adc3c1a89d12
 
 # add yarn to path
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
