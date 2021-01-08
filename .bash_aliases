@@ -8,6 +8,16 @@ alias rc='. ~/.bashrc'
 ###########################
 
 # helper functions
+mkill() {
+    if [ -z $1 ]; then
+        echo 'usage: mkill <rg>'
+        return
+    fi
+
+    ps aux | rg vagrant | awk '{ print $2}' | while read r ; do kill $r ; done
+}
+
+
 ipecho() {
     if [ -z $1 ]; then
         echo 'usage: ipecho <host>'
@@ -22,6 +32,51 @@ azsid() {
     fi
 
     echo "$(az account list | jq ".[] | select (.name == \"$1\").id" | awk '{print substr($1, 2, length($1) - 2)}')"
+}
+
+azGetKvVal() {
+    if [ -z $1 ] || [ -z $2 ]; then
+        echo 'usage: azGetKvVal <subscription> <secretname>'
+        return
+    fi
+
+    kv="kvdriw${1}"
+
+    echo "$(az keyvault secret show --vault-name $kv --name $2 | jq .value | awk '{ print substr($1, 2, length($1) - 2)}')"
+}
+
+sdkInstalledVersions() {
+    if [ -z $1 ]; then
+        echo 'usage: sdkInstalledVersions <sdk name>'
+        return
+    fi
+
+    sdk ls $1 | awk -F\| '{gsub(/^[ \t]+/, "", $5); gsub(/[ \t]+$/, "", $5); if ($5 == "installed" || $5 == "local only") { gsub(/[ \t]+/, "", $6); print $6 }}'
+}
+alias sdki="sdkInstalledVersions"
+
+sdkUseVersion() {
+    if [ -z $1 ] || [ -z $2 ]; then
+        echo 'usage: sdkUseVersion <sdk name> <version regex>'
+        return
+    fi
+
+    sdk use $1 $(sdki $1 | awk -v version=$2 '{regex="^"version; if ($1 ~ regex) { print $1 }}')
+}
+alias sdku='sdkUseVersion'
+
+sdkUpdate() {
+    if [ -z $1 ] || [ -z $2 ]; then
+        echo 'usage sdkUpdate <skd name> <version regex>'
+        return
+    fi
+
+    curVer=$(sdki $1 | awk -v version=$2 '{regex="^"version; if ($1 ~ regex) { ver = gensub(/(.*)([0-9]+\.[0-9]+\.[0-9]+)(.*)/, "\\2", "g", $1); print ver }}')
+    patchNum=$(echo $curVer | awk '{ split($0, arr, "."); print arr[3] }')
+    echo $curVer
+    echo $patchNum
+
+    highVer=$(sdk ls $1 | awk -v version=$2 -F\| '{regex="^"version; gsub(/^[ \t]+/, "", $6); gsub(/[ \t]$/, "", $6); if ($6 ~ regex) { ver = gensub(/(.*)([0-9]+\.[0-9]+\.[0-9]+)(.*)/, "\\2", "g", $6); print ver }}' | )
 }
 ###########################
 
@@ -102,11 +157,27 @@ alias l1='e1'
 
 # reckon
 createTag() {
-  if [[ -z "$1" || -z "$2" ]]; then
-    echo 'Usage: rct <stage> <scope>'
+
+  if [ "$#" -eq 1 ]; then
+    stage='final'
+
+    if [ -z $1 ]; then
+      echo 'Usage reckonTagCreate <scope>'
+      return # wrong params
+    fi
+    scope=$1
   else
-    gw reckonTagCreate -Preckon.stage=$1 -Preckon.scope=$2
+    if [[ -z $1 || -z $2 ]]; then
+      echo 'Usage: reckonTagCreate [stage] <scope>'
+      echo 'stage - defaults to "final"'
+      return # wrong params
+    fi
+
+    stage=$1
+    scope=$2
   fi
+
+  gw reckonTagCreate -Preckon.stage=$stage -Preckon.scope=$scope
 }
 
 pushLastTag() {
