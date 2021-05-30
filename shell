@@ -1,0 +1,1 @@
+./toFishAlias.sh "$(awk /alias.*git/ {print} .bash_aliases | awk NR==31)"
