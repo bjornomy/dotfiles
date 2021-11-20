@@ -13,3 +13,10 @@ format = "[$user]($style) "
 [cmd_duration]
 format = "祥[$duration]($style) "
 
+[git_branch]
+format = "[$symbol$branch]($style) "
+style = "yellow"
+
+[git_status]
+style = "green"
+
